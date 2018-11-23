@@ -24,16 +24,9 @@ namespace Calculator
 
                 if (char.IsDigit(expression[i]))
                 {
-                    while (!_operatorsService.IsSeparator(expression[i]) && !_operatorsService.IsOperator(expression[i]))
-                    {
-                        transformedExpression += expression[i];
-                        i++;
-
-                        if (i == expression.Length) break;
-                    }
-
-                    transformedExpression += " ";
-                    i--;
+                    var number = TakeNumber(expression, i);
+                    transformedExpression += number + " ";
+                    i += number.Length - 1;
                 }
                 else if (_operatorsService.IsOperator(expression[i]))
                 {
@@ -71,5 +64,19 @@ namespace Calculator
             return transformedExpression;
         }
 
+        private string TakeNumber(string expression, int position)
+        {
+            var number = string.Empty;
+
+            while (!_operatorsService.IsSeparator(expression[position]) && !_operatorsService.IsOperator(expression[position]))
+            {
+                number += expression[position];
+                position++;
+
+                if (position == expression.Length) break;
+            }
+
+            return number;
+        }
     }
 }
