@@ -1,0 +1,6 @@
+Calculator/.vs/*
+Calculator/Calculator/bin/*
+Calculator/Calculator/obj/*
+Calculator/Calculator.Test/bin/*
+Calculator/Calculator.Test/obj/*
+Calculator/packages/*
