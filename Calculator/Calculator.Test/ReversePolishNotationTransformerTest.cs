@@ -6,7 +6,7 @@ namespace Calculator.Test
     public class ReversePolishNotationTransformerTest
     {
         [Fact]
-        public void TransformExpression()
+        public void ReturnReversePolishNotationExpression()
         {
             var expression = "2 + 3";
 

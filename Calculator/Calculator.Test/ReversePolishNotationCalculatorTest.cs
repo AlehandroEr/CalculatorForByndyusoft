@@ -8,7 +8,7 @@ namespace Calculator.Test
     public class ReversePolishNotationCalculatorTest
     {
         [Fact]
-        public void CalculateExpression()
+        public void ReturnResultOfReversePolishNotationExpression()
         {
             var expression = "2 3 + ";
 
