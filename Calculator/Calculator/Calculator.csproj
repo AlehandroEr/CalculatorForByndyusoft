@@ -52,6 +52,7 @@
     <Compile Include="OperatorsService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReversePolishNotationCalculator.cs" />
     <Compile Include="ReversePolishNotationTransformer.cs" />
   </ItemGroup>
   <ItemGroup>
