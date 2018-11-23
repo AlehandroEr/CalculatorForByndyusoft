@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using Moq;
+using Xunit;
 
 namespace Calculator.Test
 {
@@ -9,7 +10,28 @@ namespace Calculator.Test
         {
             var expression = "2 + 3";
 
-            var transformer = new ReversePolishNotationTransformer();
+            var operatorsService = new Mock<IOperatorsService>();
+
+            operatorsService.Setup(m => m.GetPriority('+'))
+                .Returns(0);
+            operatorsService.Setup(m => m.IsSeparator(' '))
+                .Returns(true);
+            operatorsService.Setup(m => m.IsSeparator('2'))
+                .Returns(false);
+            operatorsService.Setup(m => m.IsSeparator('3'))
+                .Returns(false);
+            operatorsService.Setup(m => m.IsSeparator('+'))
+                .Returns(false);
+            operatorsService.Setup(m => m.IsOperator('2'))
+                .Returns(false);
+            operatorsService.Setup(m => m.IsOperator('3'))
+                .Returns(false);
+            operatorsService.Setup(m => m.IsOperator(' '))
+                .Returns(false);
+            operatorsService.Setup(m => m.IsOperator('+'))
+                .Returns(true);
+
+            var transformer = new ReversePolishNotationTransformer(operatorsService.Object);
 
             var transformedExpression = transformer.TransformExpression(expression);
 
