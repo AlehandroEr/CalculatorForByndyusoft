@@ -26,16 +26,9 @@ namespace Calculator
 
                 if (char.IsDigit(expression[i]))
                 {
-                    var number = string.Empty;
-
-                    while (!_operatorsService.IsSeparator(expression[i]) && !_operatorsService.IsOperator(expression[i]))
-                    {
-                        number += expression[i];
-                        i++;
-                        if (i == expression.Length) break;
-                    }
+                    var number = TakeNumber(expression, i);
                     stack.Push(double.Parse(number));
-                    i--;
+                    i += number.Length - 1;
                 }
                 else if (_operatorsService.Operations.ContainsKey(expression[i]))
                     stack.Push(_operatorsService.Operations[expression[i]](stack.Pop(), stack.Pop()));
@@ -43,6 +36,21 @@ namespace Calculator
                     throw new ArgumentException();
             }
             return stack.Pop();
+        }
+
+        private string TakeNumber(string expression, int position)
+        {
+            var number = string.Empty;
+
+            while (!_operatorsService.IsSeparator(expression[position]) && !_operatorsService.IsOperator(expression[position]))
+            {
+                number += expression[position];
+                position++;
+
+                if (position == expression.Length) break;
+            }
+
+            return number;
         }
     }
 }
