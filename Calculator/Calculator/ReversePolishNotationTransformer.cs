@@ -5,6 +5,13 @@ namespace Calculator
 {
     public class ReversePolishNotationTransformer : IExpressionTransformer
     {
+        private readonly IOperatorsService _operatorsService;
+
+        public ReversePolishNotationTransformer(IOperatorsService operatorsService)
+        {
+            _operatorsService = operatorsService;
+        }
+
         public string TransformExpression(string expression)
         {
             var transformedExpression = string.Empty;
@@ -12,12 +19,12 @@ namespace Calculator
 
             for (var i = 0; i < expression.Length; i++)
             {
-                if (IsSeparator(expression[i]))
+                if (_operatorsService.IsSeparator(expression[i]))
                     continue;
 
                 if (char.IsDigit(expression[i]))
                 {
-                    while (!IsSeparator(expression[i]) && !IsOperator(expression[i]))
+                    while (!_operatorsService.IsSeparator(expression[i]) && !_operatorsService.IsOperator(expression[i]))
                     {
                         transformedExpression += expression[i];
                         i++;
@@ -28,7 +35,7 @@ namespace Calculator
                     transformedExpression += " ";
                     i--;
                 }
-                else if (IsOperator(expression[i]))
+                else if (_operatorsService.IsOperator(expression[i]))
                 {
                     if (expression[i] == '(')
                         operStack.Push(expression[i]);
@@ -46,7 +53,7 @@ namespace Calculator
                     {
                         if (operStack.Count > 0)
                             if (operStack.Peek() != '(')
-                                if (GetPriority(expression[i]) <= GetPriority(operStack.Peek()))
+                                if (_operatorsService.GetPriority(expression[i]) <= _operatorsService.GetPriority(operStack.Peek()))
                                     transformedExpression += operStack.Pop() + " ";
 
                         operStack.Push(expression[i]);
@@ -64,26 +71,5 @@ namespace Calculator
             return transformedExpression;
         }
 
-        public static bool IsSeparator(char c)
-        {
-            return " =".IndexOf(c) != -1;
-        }
-
-        public static bool IsOperator(char с)
-        {
-            return "+-/*()".IndexOf(с) != -1;
-        }
-
-        public static int GetPriority(char c)
-        {
-            switch (c)
-            {
-                case '+': return 0;
-                case '-': return 0;
-                case '*': return 1;
-                case '/': return 1;
-                default: throw new ArgumentException();
-            }
-        }
     }
 }
