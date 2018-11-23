@@ -34,13 +34,7 @@ namespace Calculator
                         operStack.Push(expression[i]);
                     else if (expression[i] == ')')
                     {
-                        var oper = operStack.Pop();
-
-                        while (oper != '(')
-                        {
-                            transformedExpression += oper.ToString() + ' ';
-                            oper = operStack.Pop();
-                        }
+                        transformedExpression += TakeAllArithmeticOperatorsUntilOpeningBracket(operStack);
                     }
                     else
                     {
@@ -77,6 +71,20 @@ namespace Calculator
             }
 
             return number;
+        }
+
+        private string TakeAllArithmeticOperatorsUntilOpeningBracket(Stack<char> operStack)
+        {
+            var operations = string.Empty;
+            var oper = operStack.Pop();
+
+            while (oper != '(')
+            {
+                operations += oper.ToString() + ' ';
+                oper = operStack.Pop();
+            }
+
+            return operations;
         }
     }
 }
