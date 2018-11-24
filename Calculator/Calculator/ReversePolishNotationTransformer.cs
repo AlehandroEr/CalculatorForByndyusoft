@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Calculator
 {
@@ -14,7 +15,7 @@ namespace Calculator
 
         public string TransformExpression(string expression)
         {
-            var transformedExpression = string.Empty;
+            var transformedExpression = new StringBuilder();
             var operStack = new Stack<char>();
 
             for (var i = 0; i < expression.Length; i++)
@@ -25,7 +26,7 @@ namespace Calculator
                 if (char.IsDigit(expression[i]))
                 {
                     var number = TakeNumber(expression, i);
-                    transformedExpression += number + " ";
+                    transformedExpression.Append(number + " ");
                     i += number.Length - 1;
                 }
                 else if (_operatorsService.IsOperator(expression[i]))
@@ -34,14 +35,14 @@ namespace Calculator
                         operStack.Push(expression[i]);
                     else if (expression[i] == ')')
                     {
-                        transformedExpression += TakeAllArithmeticOperatorsUntilOpeningBracket(operStack);
+                        transformedExpression.Append(TakeAllArithmeticOperatorsUntilOpeningBracket(operStack));
                     }
                     else
                     {
                         if (operStack.Count > 0)
                             if (operStack.Peek() != '(')
                                 if (_operatorsService.GetPriority(expression[i]) <= _operatorsService.GetPriority(operStack.Peek()))
-                                    transformedExpression += operStack.Pop() + " ";
+                                    transformedExpression.Append(operStack.Pop() + " ");
 
                         operStack.Push(expression[i]);
 
@@ -53,38 +54,38 @@ namespace Calculator
             }
 
             while (operStack.Count > 0)
-                transformedExpression += operStack.Pop() + " ";
+                transformedExpression.Append(operStack.Pop() + " ");
 
-            return transformedExpression;
+            return transformedExpression.ToString();
         }
 
         private string TakeNumber(string expression, int position)
         {
-            var number = string.Empty;
+            var number = new StringBuilder();
 
             while (!_operatorsService.IsSeparator(expression[position]) && !_operatorsService.IsOperator(expression[position]))
             {
-                number += expression[position];
+                number.Append(expression[position]);
                 position++;
 
                 if (position == expression.Length) break;
             }
 
-            return number;
+            return number.ToString();
         }
 
         private string TakeAllArithmeticOperatorsUntilOpeningBracket(Stack<char> operStack)
         {
-            var operations = string.Empty;
+            var operations = new StringBuilder();
             var oper = operStack.Pop();
 
             while (oper != '(')
             {
-                operations += oper.ToString() + ' ';
+                operations.Append(oper.ToString() + ' ');
                 oper = operStack.Pop();
             }
 
-            return operations;
+            return operations.ToString();
         }
     }
 }

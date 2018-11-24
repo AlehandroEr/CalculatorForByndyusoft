@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Calculator
 {
@@ -40,17 +41,17 @@ namespace Calculator
 
         private string TakeNumber(string expression, int position)
         {
-            var number = string.Empty;
+            var number = new StringBuilder();
 
             while (!_operatorsService.IsSeparator(expression[position]) && !_operatorsService.IsOperator(expression[position]))
             {
-                number += expression[position];
+                number.Append(expression[position]);
                 position++;
 
                 if (position == expression.Length) break;
             }
 
-            return number;
+            return number.ToString();
         }
     }
 }
