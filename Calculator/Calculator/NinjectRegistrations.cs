@@ -2,7 +2,7 @@
 
 namespace Calculator
 {
-    public class Bindings : NinjectModule
+    public class NinjectRegistrations : NinjectModule
     {
         public override void Load()
         {
