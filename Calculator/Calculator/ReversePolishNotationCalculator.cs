@@ -28,7 +28,15 @@ namespace Calculator
                 if (char.IsDigit(expression[i]))
                 {
                     var number = TakeNumber(expression, i);
-                    stack.Push(double.Parse(number));
+                    double result;
+                    if (!double.TryParse(number, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.GetCultureInfo("ru-RU"), out result))
+                    {
+                        if (!double.TryParse(number, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out result))
+                        {
+                            throw new ArgumentException();
+                        }
+                    }
+                    stack.Push(result);
                     i += number.Length - 1;
                 }
                 else if (_operatorsService.Operations.ContainsKey(expression[i]))
